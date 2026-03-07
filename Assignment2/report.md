@@ -1,0 +1,22 @@
+# Assignment 2: Axisymmetric Turbulent Jet 
+
+This is my submission for Assignment 2, which covers setting up an axisymmetric, steady-state, turbulent jet case from scratch and running it in SU2.
+
+## Mesh Generation
+I created the mesh using Gmsh by writing a `.geo` script (`jet.geo`). Instead of doing a full 3D simulation, I set up a 2D wedge slice to make it axisymmetric, which speeds things up significantly. The domain extends out far enough (about 50 jet widths long and 20 jet widths wide) to ensure the boundaries don't interfere with the jet flow. I refined the mesh near the centerline and the jet inlet to capture the shear layer gradients where the mixing happens. The physical groups are set up for the inlet, outlet, farfield, and the symmetry axis.
+
+## Configuration
+For the SU2 configuration (`jet.cfg`), I based it on the standard turbulent jet validation case in the SU2 repository. 
+- **Solver details:** I used the RANS steady-state solver (`SOLVER= RANS`).
+- **Turbulence model:** Spalart-Allmaras (`KIND_TURB_MODEL= SA`).
+- **Axisymmetric Setup:** I enabled the `AXISYMMETRIC= YES` option since the geometry is a 2D wedge.
+- **Boundaries:** 
+  - `MARKER_INLET` is used for the jet nozzle where I specified the total temperature, total pressure, and flow direction to drive the jet.
+  - `MARKER_FAR` handles the outer boundaries with free-stream stagnation conditions.
+  - `MARKER_SYM` is applied along the bottom edge to act as the centerline of the jet.
+- **Numerics:** I configured it to run with the Green-Gauss gradient method and a Roe flux scheme for the flow equations.
+
+## Execution and Results
+Once everything was set up, I ran the simulation using the standard SU2 suite. The solver iterates on the flow and turbulence equations until the residuals drop to an acceptable level.
+
+The output provides the `flow.vtu` file which can be visualized in ParaView to analyze the velocity spreading and mixing down the length of the jet. Since I used the SA model with the axisymmetric setup, it accurately models the basic growth rate of the turbulent shear layer, although comparing it directly against advanced experimental data would likely require tuning the mixing length or using an SST model to capture the exact velocity decay curve perfectly.
