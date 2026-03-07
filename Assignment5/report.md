@@ -91,13 +91,17 @@ The speed of sound shows up as the 4th column on screen:
 
 ### Volume output
 
-The VTU file now has a `Sound_Speed` data array that can be opened in ParaView:
+The VTU file now has a `Sound_Speed` data array that can be opened in ParaView, or custom rendering scripts.
 
 ```xml
 <DataArray type="Float32" Name="Sound_Speed" NumberOfComponents="1" .../>
 ```
 
-This lets you see how the speed of sound varies spatially across the domain — it'll be slightly different in the hot jet core vs. the ambient coflow.
+Here is a 2D contour visualization of the local sound speed generated directly from `vol_solution.vtu` using Matplotlib:
+
+![Speed of Sound Field](sound_speed_visualization.png)
+
+This lets you see how the speed of sound varies spatially across the domain — it is slightly different in the hot jet core versus the ambient coflow.
 
 ## How to Reproduce
 
