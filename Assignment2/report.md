@@ -19,16 +19,10 @@ For the SU2 configuration (`jet.cfg`), I based it on the standard turbulent jet 
 ## Execution and Convergence
 Once everything was set up, I ran the simulation using the standard SU2 suite. The solver iterates on the flow and turbulence equations until the residuals drop to an acceptable level.
 
-Here is the convergence history of the primary residuals, demonstrating that the flow and turbulence equations drop iteratively:
+Here is the convergence history of the primary residuals across all iterations, demonstrating that the flow and turbulence equations drop iteratively:
 
-| Iteration | `rms[Rho]` | `rms[RhoU]` | `rms[k]` | `rms[w]` |
-|-----------|-------------|--------------|----------|----------|
-| 0         | -0.721      | 1.570        | -2.181   | 2.277    |
-| 100       | -2.723      | 0.326        | -3.925   | 0.534    |
-| 200       | -2.720      | 0.365        | -4.208   | 0.250    |
-| 300       | -2.733      | 0.345        | -4.224   | 0.234    |
-| 400       | -2.736      | 0.323        | -4.207   | 0.251    |
-| 499       | -2.862      | 0.228        | -4.176   | 0.282    |
+- **[Convergence History Data (`convergence_data.csv`)](./convergence_data.csv)**  
+*(This file contains the full 500-iteration history of the `rms[Rho]`, `rms[RhoU]`, `rms[k]`, and `rms[w]` residuals).*
 
 The output provides the `flow.vtu` file which can be visualized in ParaView to analyze the velocity spreading and mixing down the length of the jet. 
 
