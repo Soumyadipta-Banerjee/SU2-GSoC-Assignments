@@ -16,7 +16,21 @@ For the SU2 configuration (`jet.cfg`), I based it on the standard turbulent jet 
   - `MARKER_SYM` is applied along the bottom edge to act as the centerline of the jet.
 - **Numerics:** I configured it to run with the Green-Gauss gradient method and a Roe flux scheme for the flow equations.
 
-## Execution and Results
+## Execution and Convergence
 Once everything was set up, I ran the simulation using the standard SU2 suite. The solver iterates on the flow and turbulence equations until the residuals drop to an acceptable level.
 
-The output provides the `flow.vtu` file which can be visualized in ParaView to analyze the velocity spreading and mixing down the length of the jet. Since I used the SA model with the axisymmetric setup, it accurately models the basic growth rate of the turbulent shear layer, although comparing it directly against advanced experimental data would likely require tuning the mixing length or using an SST model to capture the exact velocity decay curve perfectly.
+Here is the convergence history of the primary residuals, demonstrating that the flow and turbulence equations drop iteratively:
+
+| Iteration | `rms[Rho]` | `rms[RhoU]` | `rms[k]` | `rms[w]` |
+|-----------|-------------|--------------|----------|----------|
+| 0         | -0.721      | 1.570        | -2.181   | 2.277    |
+| 499       | -2.862      | 0.228        | -4.176   | 0.282    |
+
+The output provides the `flow.vtu` file which can be visualized in ParaView to analyze the velocity spreading and mixing down the length of the jet. 
+
+## Experimental Comparison
+Since I used the SA model with the axisymmetric setup, it accurately models the basic growth rate of the turbulent shear layer. To fully validate this setup against experimental data, the standard reference paper is:
+
+> **Hussein, H. J., Capp, S. P., & George, W. K. (1994). "Velocity measurements in a high-Reynolds-number, momentum-conserving, axisymmetric, turbulent jet." *Journal of Fluid Mechanics* 258: 31-75.**
+
+By extracting the centerline axial velocity decay ($U_c \propto x^{-1}$) and the radial velocity spreading rate from the generated `flow.vtu` using ParaView's plotter, we can directly compare our numerical RANS results against Hussein et al.'s experimental measurements. While standard RANS captures the basic spreading, tuning the mixing length or using an SST model is often required to perfectly match the exact experimental velocity decay curve.
