@@ -24,6 +24,10 @@ Here is the convergence history of the primary residuals, demonstrating that the
 | Iteration | `rms[Rho]` | `rms[RhoU]` | `rms[k]` | `rms[w]` |
 |-----------|-------------|--------------|----------|----------|
 | 0         | -0.721      | 1.570        | -2.181   | 2.277    |
+| 100       | -2.723      | 0.326        | -3.925   | 0.534    |
+| 200       | -2.720      | 0.365        | -4.208   | 0.250    |
+| 300       | -2.733      | 0.345        | -4.224   | 0.234    |
+| 400       | -2.736      | 0.323        | -4.207   | 0.251    |
 | 499       | -2.862      | 0.228        | -4.176   | 0.282    |
 
 The output provides the `flow.vtu` file which can be visualized in ParaView to analyze the velocity spreading and mixing down the length of the jet. 
