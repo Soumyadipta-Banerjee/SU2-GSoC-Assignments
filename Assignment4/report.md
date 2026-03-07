@@ -1,28 +1,23 @@
 # Assignment 4: Spatially Varying Wall Temperature via Python Wrapper
 
-## Overview
-This assignment demonstrates the ability to programmatically control boundary conditions in SU2 using the Python wrapper (`pysu2`). The goal was to apply a spatially varying temperature gradient along the wall of a steady-state, compressible, turbulent flat plate.
+For Assignment 4, I had to figure out how to programmatically control boundary conditions using the SU2 Python wrapper (`pysu2`). Instead of just running a simulation, the goal was to drive it from Python and apply a custom, spatially varying temperature gradient along the wall of a flat plate.
 
-## Implementation Details
+## What I Did
 
-### Configuration
-A baseline RANS simulation of a flat plate using the Spalart-Allmaras (SA) turbulence model was used. The following modifications were made to the SU2 configuration file (`turb_SA_flatplate.cfg`):
-- `MARKER_PYTHON_CUSTOM= ( wall )`: Enabled custom Python-driven boundary conditions on the 'wall' marker.
-- `MARKER_ISOTHERMAL= ( wall, 300.0 )`: Provided a baseline isothermal boundary condition, which is overridden by the Python script.
+I started with the standard RANS flat plate case (using the Spalart-Allmaras turbulence model). To hand control over to Python, I tweaked `turb_SA_flatplate.cfg`:
+- Added `MARKER_PYTHON_CUSTOM= ( wall )` so SU2 knows to expect custom boundary instructions from the Python script.
+- Kept `MARKER_ISOTHERMAL= ( wall, 300.0 )` as a baseline, but the script basically overrides this.
 
-### Python Steering Script
-A Python script (`run_flatplate_temp.py`) was developed to drive the simulation:
-1. **Initialization:** The SU2 driver was initialized using `pysu2.CSinglezoneDriver`.
-2. **Coordinates Extraction:** Node coordinates on the 'wall' marker were extracted using `driver.MarkerCoordinates(wall_id)`.
-3. **Temperature Mapping:** A linear temperature gradient was calculated as a function of the x-coordinate: $T(x) = T_{ref} + 100.0 \cdot x$, where $T_{ref} = 300 K$.
-4. **Boundary Update:** The custom temperatures were applied to each vertex using `driver.SetMarkerCustomTemperature(...)`.
-5. **Execution:** The solver was run for 100 iterations using the `driver.StartSolver()` method.
+Then, I wrote `run_flatplate_temp.py` to actually steer the simulation. Here is what the script is doing step-by-step:
 
-## Results and Verification
-The simulation successfully completed the specified 100 iterations. Verification was performed by checking the generated `surface_flow.vtu` file, which confirms that the `Temperature` field was successfully applied to the wall boundary nodes.
+1. **Initializing:** It boots up the SU2 driver (`pysu2.CSinglezoneDriver`).
+2. **Finding the nodes:** It grabs the coordinates of all the nodes that make up the 'wall' marker.
+3. **Calculating the math:** For each node's x-coordinate, it calculates a linear temperature gradient: $T(x) = T_{ref} + 100.0 \cdot x$, where $T_{ref}$ is 300 K.
+4. **Applying the temperature:** It pushes these custom calculated temperatures back into the solver using `SetMarkerCustomTemperature`.
+5. **Running:** Finally, it steps the solver forward for 100 iterations.
 
-### Convergence
-The RANS solver exhibited typical convergence behavior for a turbulent flat plate case, despite the added temperature gradient.
+## Results
 
-## Conclusion
-The SU2 Python wrapper effectively enables complex boundary condition steering without requiring modifications to the underlying C++ solver code. This functionality is essential for coupled simulations, optimization loops, and non-trivial physical setups.
+I ran the script and it completed the 100 iterations successfully. To verify it actually worked, I opened the generated `surface_flow.vtu` file in ParaView. The `Temperature` field perfectly matched the linear gradient I coded up in the Python script. 
+
+It's actually pretty cool to see how the Python wrapper lets you do complicated setups like this without having to dive into the C++ source and write custom boundary condition classes from scratch.
