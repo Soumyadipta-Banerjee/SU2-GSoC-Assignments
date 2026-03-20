@@ -24,6 +24,9 @@ Here is the convergence history of the primary residuals across all iterations, 
 - **[Convergence History Data (`convergence_data.csv`)](./convergence_data.csv)**  
 *(This file contains the full 500-iteration history of the `rms[Rho]`, `rms[RhoU]`, `rms[k]`, and `rms[w]` residuals).*
 
+![Convergence History](./ass2_convergence.png)
+
+
 The output provides the `flow.vtu` file which can be visualized in ParaView to analyze the velocity spreading and mixing down the length of the jet. 
 
 ## Experimental Comparison

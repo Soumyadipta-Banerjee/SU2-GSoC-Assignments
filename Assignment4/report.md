@@ -20,4 +20,9 @@ Then, I wrote `run_flatplate_temp.py` to actually steer the simulation. Here is 
 
 I ran the script and it completed the 100 iterations successfully. To verify it actually worked, I opened the generated `surface_flow.vtu` file in ParaView. The `Temperature` field perfectly matched the linear gradient I coded up in the Python script. 
 
-It's actually pretty cool to see how the Python wrapper lets you do complicated setups like this without having to dive into the C++ source and write custom boundary condition classes from scratch.
+![Surface Temperature Profile](./ass4_surface.png)
+![Convergence History](./ass4_convergence.png)
+
+
+This demonstrates the utility of the SU2 Python wrapper for prototyping and implementing dynamic boundary conditions without requiring modifications to the core C++ framework.
+

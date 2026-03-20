@@ -21,4 +21,7 @@ Here are the final residuals at iteration 250:
 - `CL`: -0.187520
 - `CD`: 0.004696
 
+![Convergence History](./ass3_convergence.png)
+
+
 The solver successfully generated the output files, including `restart_flow.dat`, `flow.vtu` and `surface_flow.vtu`.
